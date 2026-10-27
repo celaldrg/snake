@@ -1,0 +1,11 @@
+{
+  "name": "snake",
+  "version": "1.0.0",
+  "description": "Classic Snake for the browser: walls or wrap mode, four speed levels, keyboard and touch controls, English and Turkish UI.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "MIT"
+}

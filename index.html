@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" class="preload">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Snake</title>
+  <meta name="description" content="Classic Snake in your browser: walls or wrap-around edges, four speed levels, saved best scores, keyboard and touch controls. Free and open source.">
+  <meta name="theme-color" content="#0f172a">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Snake">
+  <meta property="og:description" content="Classic Snake in your browser: walls or wrap-around edges, four speed levels, keyboard and touch controls.">
+  <meta property="og:url" content="https://celaldrg.github.io/snake/">
+  <meta property="og:image" content="https://celaldrg.github.io/snake/docs/screenshot.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f172a'/%3E%3Cpath d='M8 24v-9h9V9h7' fill='none' stroke='%2322c55e' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='23.5' cy='22.5' r='3' fill='%23f43f5e'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="src/main.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="#1e293b"/>
+          <path d="M8 24v-9h9V9h7" fill="none" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="23.5" cy="22.5" r="3" fill="#f43f5e"/>
+        </svg>
+        <h1 data-i18n="title">Snake</h1>
+      </div>
+      <div class="topbar-actions">
+        <button type="button" class="btn" id="new-game" data-i18n="newGame">New game</button>
+        <button type="button" class="btn btn-square" id="language" aria-label="Switch to Turkish">TR</button>
+      </div>
+    </header>
+
+    <main class="stage">
+      <section class="hud">
+        <div class="stat">
+          <span class="stat-label" data-i18n="score">Score</span>
+          <span class="stat-value" id="score">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label" data-i18n="best">Best</span>
+          <span class="stat-value" id="best">0</span>
+        </div>
+        <span class="chip" id="mode">Normal · Walls</span>
+        <button type="button" class="btn btn-square" id="pause" aria-label="Pause" disabled>
+          <svg class="icon icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+          <svg class="icon icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z"/></svg>
+        </button>
+      </section>
+
+      <div class="board" id="board" tabindex="-1" data-mode="walls">
+        <canvas id="canvas" role="img" data-i18n-label="board" aria-label="Snake board"></canvas>
+
+        <section class="overlay" id="start-overlay" aria-labelledby="speed-label">
+          <div class="card">
+            <div class="field">
+              <span class="field-label" id="speed-label" data-i18n="speed">Speed</span>
+              <div class="segmented" role="group" aria-labelledby="speed-label">
+                <button type="button" data-speed="slow" data-i18n="speed_slow" aria-pressed="false">Slow</button>
+                <button type="button" data-speed="normal" data-i18n="speed_normal" aria-pressed="true">Normal</button>
+                <button type="button" data-speed="fast" data-i18n="speed_fast" aria-pressed="false">Fast</button>
+                <button type="button" data-speed="insane" data-i18n="speed_insane" aria-pressed="false">Insane</button>
+              </div>
+            </div>
+            <div class="field">
+              <span class="field-label" id="edges-label" data-i18n="edges">Edges</span>
+              <div class="segmented segmented-2" role="group" aria-labelledby="edges-label">
+                <button type="button" data-wrap="false" data-i18n="walls" aria-pressed="true">Walls</button>
+                <button type="button" data-wrap="true" data-i18n="wrap" aria-pressed="false">Wrap</button>
+              </div>
+            </div>
+            <p class="muted" id="start-best">Best on Normal: 0</p>
+            <button type="button" class="btn btn-primary btn-wide" id="play" data-i18n="play">Play</button>
+            <p class="hint hint-touch" data-i18n="hintTouch">Swipe on the board or use the arrow pad</p>
+          </div>
+        </section>
+
+        <section class="overlay" id="pause-overlay" aria-labelledby="pause-title">
+          <div class="card">
+            <h2 class="card-title" id="pause-title" data-i18n="paused">Paused</h2>
+            <button type="button" class="btn btn-primary btn-wide" id="resume" data-i18n="resume">Resume</button>
+            <p class="hint hint-keys" data-i18n="pausedHint">Press Space to continue</p>
+          </div>
+        </section>
+
+        <section class="overlay" id="over-overlay" aria-labelledby="over-title">
+          <div class="card" aria-live="polite">
+            <h2 class="card-title" id="over-title">Game over</h2>
+            <p class="muted" id="over-cause"></p>
+            <div class="results">
+              <div class="stat">
+                <span class="stat-label" data-i18n="score">Score</span>
+                <span class="stat-value" id="over-score">0</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label" data-i18n="best">Best</span>
+                <span class="stat-value" id="over-best">0</span>
+              </div>
+            </div>
+            <p class="badge" id="new-best" data-i18n="newBest" hidden>New best!</p>
+            <div class="actions">
+              <button type="button" class="btn btn-primary" id="again" data-i18n="playAgain">Play again</button>
+              <button type="button" class="btn" id="settings" data-i18n="settings">Settings</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="dpad" id="dpad" role="group" data-i18n-label="controls" aria-label="Direction pad">
+        <button type="button" class="dpad-btn dpad-up" data-dir="up" data-i18n-label="up" aria-label="Up"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+        <button type="button" class="dpad-btn dpad-left" data-dir="left" data-i18n-label="left" aria-label="Left"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+        <button type="button" class="dpad-btn dpad-down" data-dir="down" data-i18n-label="down" aria-label="Down"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+        <button type="button" class="dpad-btn dpad-right" data-dir="right" data-i18n-label="right" aria-label="Right"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+      </div>
+      <p class="hint hint-keys board-hint" data-i18n="hintKeys">Arrows or WASD to steer · Space to pause</p>
+    </main>
+
+    <footer class="footer">
+      <span>MIT</span> · <a href="https://github.com/celaldrg/snake" data-i18n="source">Source on GitHub</a>
+    </footer>
+  </div>
+</body>
+</html>
