@@ -1,6 +1,6 @@
 # Snake - the classic grow-and-don't-bite-yourself game, right in your browser
 
-[![tests](https://github.com/celaldrg/snake/actions/workflows/test.yml/badge.svg)](https://github.com/celaldrg/snake/actions/workflows/test.yml)
+[![tests: node --test](https://img.shields.io/badge/tests-node_----test-blue)](#tests)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](LICENSE)
 
 **▶ Play now: https://celaldrg.github.io/snake/**
