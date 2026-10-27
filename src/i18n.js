@@ -16,7 +16,7 @@ export const STRINGS = Object.freeze({
   en: Object.freeze({
     title: 'Snake',
     newGame: 'New game',
-    switchLanguage: 'Switch to Turkish',
+    switchLanguage: 'TR – switch to Turkish',
     score: 'Score',
     best: 'Best',
     pause: 'Pause',
@@ -55,7 +55,7 @@ export const STRINGS = Object.freeze({
   tr: Object.freeze({
     title: 'Yılan',
     newGame: 'Yeni oyun',
-    switchLanguage: 'İngilizceye geç',
+    switchLanguage: 'EN – İngilizceye geç',
     score: 'Puan',
     best: 'En iyi',
     pause: 'Duraklat',
